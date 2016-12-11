@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_search_score"
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="@string/search_score" />
+
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@android:drawable/ic_dialog_email"
+            android:title="邮箱绑定"
+            android:enabled="true" />
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="课程表"
+            android:enabled="false"/>
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="社团无课表"
+            android:enabled="false"/>
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share"
+                android:enabled="false"/>
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="联系作者" />
+        </menu>
+    </item>
+
+</menu>
