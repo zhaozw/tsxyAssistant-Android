@@ -61,6 +61,7 @@ public class LoginActivity extends Activity {
                 cv.put("stu_id", name);
                 cv.put("rand_num", rand_text);
                 db.insert(tb_name, null ,cv);
+                db.close();
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

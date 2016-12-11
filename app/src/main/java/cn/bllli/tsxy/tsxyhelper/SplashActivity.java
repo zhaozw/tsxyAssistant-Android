@@ -46,6 +46,7 @@ public class SplashActivity extends AppCompatActivity {
                     return Boolean.TRUE;
                 }
             }
+            c.close();
             return Boolean.FALSE;
         }catch (SQLiteException e) {
             return Boolean.FALSE;

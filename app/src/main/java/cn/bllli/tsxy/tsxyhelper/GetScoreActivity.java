@@ -1,5 +1,10 @@
 package cn.bllli.tsxy.tsxyhelper;
 
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -7,23 +12,43 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class GetScoreActivity extends AppCompatActivity {
-    private EditText nameText;
+    static final String db_name = "mdb";
+    static final String tb_name = "login";
     private TextView text;
     private Button button;
-    private Button button2;
 
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             text.setText((String)msg.obj);
+            String info;
+            try{
+                JSONObject p_s = new JSONObject((String)msg.obj);
+                info = p_s.getString("grade");
+                info = info + " " +p_s.getString("stu_name") +"\n";
+                JSONArray scores = p_s.getJSONArray("scores");
+                for (int i = 0;i < scores.length();i++){
+                    JSONObject single_score = scores.getJSONObject(i);
+                    info = info + single_score.getString("id") + " " +
+                            single_score.getString("name") + " " + single_score.getString("score")+ "\n";
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+                info = "获取出错，请重试或联系我们";
+            }
+            text.setText(info);
+            button.setVisibility(View.VISIBLE);
         }
     };
     @Override
@@ -32,26 +57,14 @@ public class GetScoreActivity extends AppCompatActivity {
         setContentView(R.layout.activity_get_score);
 
         button = (Button) findViewById(R.id.button);
-        button2 = (Button) findViewById(R.id.button2);
-        nameText = (EditText) findViewById(R.id.nameText);
         text = (TextView) findViewById(R.id.text);
-
+        postData();
+        button.setVisibility(View.INVISIBLE);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nameText.setVisibility(View.INVISIBLE);
                 button.setVisibility(View.INVISIBLE);
-                button2.setVisibility(View.VISIBLE);
                 postData();
-            }
-        });
-
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nameText.setVisibility(View.VISIBLE);
-                button.setVisibility(View.VISIBLE);
-                button2.setVisibility(View.GONE);
             }
         });
     }
@@ -64,7 +77,7 @@ public class GetScoreActivity extends AppCompatActivity {
 
             @Override
             public void run() {
-                String name = nameText.getText().toString();
+                String name = getStuId();
                 Map<String, String> params = new HashMap<String, String>();
                 String post_result = null;
                 String content =  "root+" + name + "+new";
@@ -89,5 +102,27 @@ public class GetScoreActivity extends AppCompatActivity {
         }).start();
     }
 
+    private String getStuId(){
+        try {
+            SQLiteDatabase db = openOrCreateDatabase(db_name, Context.MODE_PRIVATE, null);
+
+            Cursor c = db.rawQuery("SELECT * FROM " + tb_name, null);
+            String stuid;
+            if (c.moveToFirst()){
+                stuid = c.getString(0);
+                if (stuid.length() == 10){
+                    return stuid;
+                }
+            }
+            c.close();
+            Intent it = new Intent(GetScoreActivity.this, LoginActivity.class);
+            startActivity(it);
+            return "0";
+        }catch (SQLiteException e) {
+            Intent it = new Intent(GetScoreActivity.this, LoginActivity.class);
+            startActivity(it);
+            return "0";
+        }
+    }
 
 }
