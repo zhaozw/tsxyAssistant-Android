@@ -45,7 +45,7 @@ public class GetScoreActivity extends AppCompatActivity {
                 }
             }catch (JSONException e){
                 e.printStackTrace();
-                info = "获取出错，请重试或联系我们";
+                info = "获取出错，可能是没有出成绩，或者您的网络有问题。\n请重试或联系我们";
             }
             text.setText(info);
             button.setVisibility(View.VISIBLE);

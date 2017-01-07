@@ -11,7 +11,7 @@
             android:id="@+id/nav_gallery"
             android:icon="@android:drawable/ic_dialog_email"
             android:title="邮箱绑定"
-            android:enabled="true" />
+            android:enabled="false" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"

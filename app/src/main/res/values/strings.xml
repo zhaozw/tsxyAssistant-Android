@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">设置</string>
+    <string name="about">关于</string>
 
     <string name="maker">By Bllli and Codiibear</string>
     <string name="search_score">查询成绩</string>
